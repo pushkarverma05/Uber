@@ -48,3 +48,32 @@ The request body must be in JSON format and include the following fields:
   "token": "JWT Token",
   "user": { /* user details object */ }
 }
+
+## '/users/profile' Endpoint
+### Description
+
+Retrieves the profile information of the currently authenticated user.
+
+### HTTP Method
+
+'GET'    YOU,4 seconds ago • Uncommitted changes
+
+### Authentication
+
+Requires a valid JWT token in the Authorization header:
+'Authorization: Bearer <token>'
+
+
+## '/users/logout'
+Endpoint
+### Description
+
+Logout the current user and blacklist the token provided in cookie or headers
+
+### HTTP Method
+
+'GET'
+
+### Authentication
+
+Requires a valid JWT token in the Authorization
