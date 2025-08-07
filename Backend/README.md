@@ -23,3 +23,28 @@ The request body must be in JSON format and include the following fields:
 - `email`: A string representing the user's email address (must be a valid email format, required).
 - `password`: A string representing the user's password (minimum 6 characters, required).
 -`token`:(String):JWT Token
+
+## User Login API
+
+### Endpoint
+`POST /users/login`
+
+### Description
+This endpoint allows an existing user to log in by providing their email address and password. On successful authentication, a JSON Web Token (JWT) is returned.
+
+### Request Body
+The request body must be in JSON format and include the following fields:
+- `email`: A string representing the user's email address (must be a valid email format, required).
+- `password`: A string representing the user's password (minimum 6 characters, required).
+
+### Example Request
+{
+  "email": "user@example.com",
+  "password": "yourpassword"
+}
+
+### Example Response
+{
+  "token": "JWT Token",
+  "user": { /* user details object */ }
+}
