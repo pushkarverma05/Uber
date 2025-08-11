@@ -2,7 +2,7 @@ const userModel = require("../models/user.models")
 const userService = require("../services/user.service");
 const { validationResult } = require('express-validator');
 const blacklistTokenSchema = require("../models/blacklistToken.model");
-const { sendSms } = require("../utils/Firebase");
+const admin = require("../utils/Firebase");
 
 
 

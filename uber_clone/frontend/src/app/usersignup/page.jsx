@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
+import axios from "axios";
 
 const UserSignUp = () => {
    const [firstname, setFirstname] = useState("");
@@ -11,7 +12,7 @@ const UserSignUp = () => {
     const [userData , setUserData] = useState({});
 
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
 
     const newUserData = {
@@ -26,6 +27,8 @@ const UserSignUp = () => {
 
     setUserData(newUserData);
     console.log(newUserData); // log immediately with the collected data
+
+    const response = await axios.post()
 
     // Now clear the inputs
     setFirstname("");
@@ -117,7 +120,7 @@ const UserSignUp = () => {
                 type="submit"
                 className="bg-blue-600 text-white py-2 mb-4 rounded-lg font-medium hover:bg-blue-700"
               >
-                Login
+                Create Account
               </button>
             </form>
             <p className="text-white font-light">Already have a account?<Link href='/Userlogin' className="ml-2 text-blue-500 font-light">Login here</Link></p>

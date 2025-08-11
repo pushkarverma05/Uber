@@ -118,7 +118,7 @@ const CaptainLogin = () => {
                 type="submit"
                 className="bg-blue-600 text-white py-2 mb-4 rounded-lg font-medium hover:bg-blue-700"
               >
-                Login
+                Create Account
               </button>
             </form>
             <p className="text-white font-light">Already have a account?<Link href='/captainlogin' className="ml-2 text-blue-500 font-light">Login here</Link></p>
