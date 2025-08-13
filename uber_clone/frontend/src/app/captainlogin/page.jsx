@@ -2,23 +2,33 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { CaptainDataContext } from "../context/CaptainContext";
+import axios from "axios";
 
 export default function CaptainLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userData, setCaptainData] = useState({});
+  const {captain ,setCaptain} = React.useContext(CaptainDataContext);
+  const router = useRouter();
 
 
-  const handleEmailLogin = (e) => {
+  const handleEmailLogin = async (e) => {
     e.preventDefault();
 
-    const newcaptainData = {
+    const captainData = {
       email: email,
       password: password
     };
 
-    setCaptainData(newcaptainData);
-    console.log(newcaptainData); // log immediately with the collected data
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/captains/login`, captainData);
+
+    if(response.status === 200){
+      const data = response.data
+      setCaptain(data.captain);
+      localStorage.setItem("token", data.token);
+      router.push("/CaptainsHome");
+    }
+
 
     // Now clear the inputs
     setEmail("");

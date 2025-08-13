@@ -2,15 +2,19 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import axios from "axios";
+import { UserDataContext } from "../context/UserContext";
+import { useRouter } from "next/navigation";
+
 
 const UserSignUp = () => {
    const [firstname, setFirstname] = useState("");
    const [lastname, setLastname] = useState("");
-   const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [userData , setUserData] = useState({});
 
+    const router = useRouter();
+   const{ user , setUser} = React.useContext(UserDataContext);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -20,22 +24,25 @@ const UserSignUp = () => {
         firstname: firstname,
         lastname: lastname
       },
-      phone: phone,
       email: email,
       password: password
     };
 
-    setUserData(newUserData);
-    console.log(newUserData); // log immediately with the collected data
 
-    const response = await axios.post()
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/users/register`, newUserData);
+
+    if(response.status === 201){
+      const data = response.data
+      setUser(data.user);
+      localStorage.setItem("token", data.token);
+      router.push("/Home");
+    }
 
     // Now clear the inputs
-    setFirstname("");
-    setLastname("");
-    setPhone("");
-    setEmail("");
-    setPassword("");
+    setFirstname('');
+    setLastname('');  
+    setEmail('');
+    setPassword('');
 
     // TODO: Add Firebase email/password signup here
   };
@@ -82,17 +89,6 @@ const UserSignUp = () => {
                   required
                 />
               </div>
-              </div>
-              <div>
-                <label className="block text-zinc-500 font-medium mb-1">Number</label>
-                <input
-                  type="tel"
-                  placeholder="Enter Your Number"
-                  className=" rounded px-3 text-white bg-zinc-800 py-2 w-full"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  required
-                />
               </div>
               <div>
                 <label className="block text-zinc-500 font-medium mb-1">Email</label>

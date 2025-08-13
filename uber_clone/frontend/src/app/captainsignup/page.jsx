@@ -1,18 +1,25 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-
+import { useRouter } from "next/navigation";
+import { CaptainDataContext } from "../context/CaptainContext";
+import axios from "axios";
 
 const CaptainLogin = () => {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
-  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [color, setVehicleColor] = useState("");
+  const [plate, setVehiclePlate] = useState("");
+  const [capacity, setVehicleCapacity] = useState("");
+  const [vehicletype, setVehicleType] = useState("");
   const [captainData , setcaptainData] = useState({});
+  const {captain ,setCaptain} = React.useContext(CaptainDataContext);
   
+  const router = useRouter();
   
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
 
     const newcaptainData = {
@@ -20,20 +27,34 @@ const CaptainLogin = () => {
         firstname: firstname,
         lastname: lastname
       },
-      phone: phone,
       email: email,
-      password: password
+      password: password,
+      vehicle:{
+        color : color,
+        plate : plate,
+        capacity : capacity,
+        vehicletype : vehicletype
+      }
     };
 
-    setcaptainData(newcaptainData);
-    console.log(newcaptainData); // log immediately with the collected data
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/captains/register`, newcaptainData);
+
+    if(response.status === 201){
+      const data = response.data
+      setCaptain(data.captain);
+      localStorage.setItem("token", data.token);
+      router.push("/CaptainsHome");
+    }
 
     // Now clear the inputs
     setFirstname("");
     setLastname("");
-    setPhone("");
     setEmail("");
     setPassword("");
+    setVehicleColor("");
+    setVehiclePlate("");
+    setVehicleCapacity("");
+    setVehicleType("");
 
     // TODO: Add Firebase email/password signup here
   };
@@ -82,17 +103,6 @@ const CaptainLogin = () => {
               </div>
               </div>
               <div>
-                <label className="block text-zinc-500 font-medium mb-1">Number</label>
-                <input
-                  type="tel"
-                  placeholder="Enter Your Number"
-                  className=" rounded px-3 text-white bg-zinc-800 py-2 w-full"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  required
-                />
-              </div>
-              <div>
                 <label className="block text-zinc-500 font-medium mb-1">Email</label>
                 <input
                   type="email"
@@ -113,6 +123,55 @@ const CaptainLogin = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
+              </div>
+               <h3 className="text-lg font-medium text-white mb-2">Vehicle Details</h3>
+               <div className="flex justify-between gap-4">
+               <div className="w-1/2">
+                <label className="block text-zinc-500 font-medium mb-1"> Vehicle Color</label>
+                <input
+                  type="text"
+                  placeholder="Enter Vehicle Color"
+                  className=" rounded px-3 text-white bg-zinc-800 py-2 w-full"
+                  value={color}
+                  onChange={(e) => setVehicleColor(e.target.value)}
+                  required
+                />
+              </div>
+               <div className="w-1/2">
+                <label className="block text-zinc-500 font-medium mb-1"> Vehicle Plate</label>
+                <input
+                  type="text"
+                  placeholder="Enter Vehicle Plate"
+                  className=" rounded px-3 text-white bg-zinc-800 py-2 w-full"
+                  value={plate}
+                  onChange={(e) => setVehiclePlate(e.target.value)}
+                  required
+                />
+              </div>
+              </div>
+              <div className="flex justify-between gap-4">
+               <div className="w-1/2">
+                <label className="block text-zinc-500 font-medium mb-1"> Vehicle Capacity</label>
+                <input
+                  type="number"
+                  placeholder="Enter Vehicle Capacity"
+                  className=" rounded px-3 text-white bg-zinc-800 py-2 w-full"
+                  value={capacity}
+                  onChange={(e) => setVehicleCapacity(e.target.value)}
+                  required
+                />
+              </div>
+               <div className="w-1/2">
+                <label className="block text-zinc-500 font-medium mb-1"> Vehicle Type</label>
+                <input
+                  type="text"
+                  placeholder="Enter Vehicle Type"
+                  className=" rounded px-3 text-white bg-zinc-800 py-2 w-full"
+                  value={vehicletype}
+                  onChange={(e) => setVehicleType(e.target.value)}
+                  required
+                />
+              </div>
               </div>
               <button
                 type="submit"

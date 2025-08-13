@@ -1,53 +1,36 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-import { auth } from "../firebaseClient";
 import Link from "next/link";
+import { UserDataContext } from "../context/UserContext";
+import axios from "axios";
+
 
 export default function UserLogin() {
-  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
-  const [userData, setUserData] = useState({});
+   const [userData , setUserData] = useState({});
   const router = useRouter();
+  const{user , setUser} = React.useContext(UserDataContext);
 
-  const setupRecaptcha = () => {
-    window.recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {
-      size: "invisible",
-      callback: () => console.log("Recaptcha solved"),
-    });
-  };
 
-  const sendOtp = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setupRecaptcha();
-
-    try {
-      const appVerifier = window.recaptchaVerifier;
-      const confirmationResult = await signInWithPhoneNumber(auth, `+91${phone}`, appVerifier);
-      window.confirmationResult = confirmationResult;
-      router.push(`/otp?phone=${phone}`);
-    } catch (err) {
-      setMessage(err.message);
-    }
-    setLoading(false);
-  };
-
-  const handleEmailLogin = (e) => {
+  const handleEmailLogin = async (e) => {
     e.preventDefault();
 
-    const newUserData = {
+    const userData = {
       email: email,
       password: password
     };
 
-    setUserData(newUserData);
-    console.log(newUserData); // log immediately with the collected data
 
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/users/login`, userData);
+
+    if(response.status === 200){
+      const data = response.data
+      setUser(data.user);
+      localStorage.setItem("token", data.token);
+      router.push("/Home");
+    }
     // Now clear the inputs
     setEmail("");
     setPassword("");
@@ -65,35 +48,6 @@ export default function UserLogin() {
       <div className="w-full p-6">
         {/* Two-column responsive layout */}
         <div className="flex flex-col items-center justify-center gap-8 w-full">
-          
-          {/* Phone Login */}
-          <div className="rounded-lg w-full md:w-1/3 p-6 shadow-sm">
-            <h2 className="text-2xl text-white font-semibold text-center mb-12">
-              Login with Mobile Number
-            </h2>
-            <form onSubmit={sendOtp} className="flex text-white flex-col gap-4">
-              <div className="flex  rounded-lg overflow-hidden">
-                <span className="bg-zinc-900 px-3 py-2">🇮🇳 +91</span>
-                <input
-                  type="tel"
-                  className="flex-1 p-2 outline-none bg-zinc-800"
-                  placeholder="Enter mobile number"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  required
-                />
-              </div>
-              <button
-                type="submit"
-                className="bg-blue-500 text-white py-2 rounded-lg font-medium"
-                disabled={loading}
-              >
-                {loading ? "Sending..." : "Continue"}
-              </button>
-              {message && <p className="text-red-500 text-sm">{message}</p>}
-            </form>
-            <div id="recaptcha-container"></div>
-          </div>
 
           {/* Email + Password Login */}
           <div className="rounded-lg w-full md:w-1/3 p-6 shadow-sm">

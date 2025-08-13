@@ -2,18 +2,22 @@
 import React, { createContext, useState } from "react";
 
 export const UserDataContext = createContext();
-// Create context
 
-
-// Create provider component
 export const UserProvider = ({ children }) => {
+   const [isloading ,setIsLoading] = useState(false);
   const [user, setUser] = useState({
-    email:'',
-    fullname:{
-        firstname:'',
-        lastname:''
+    email: '',
+    fullname: {
+      firstname: '',
+      lastname: ''
     }
-  }); // You can store user data here
+  });
+  const value ={
+    user,
+    setUser,
+    isloading,
+    setIsLoading,
+  }
 
   return (
     <UserDataContext.Provider value={{ user, setUser }}>
