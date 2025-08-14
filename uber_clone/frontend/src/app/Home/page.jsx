@@ -126,7 +126,7 @@ const UserHome = () => {
         </div>
         <div
         ref={vehicleWaitingRef}
-          className="fixed w-full h-full z-10 right-0 top-0  px-3 py-7 bg-[#141414]">
+          className="fixed w-full h-full z-10 right-0 top-0 translate-x-full  px-3 py-7 bg-[#141414]">
           <WaitingForDriver vehicleWaiting={vehicleWaiting} />
         </div>
       </div>
