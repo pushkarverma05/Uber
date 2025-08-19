@@ -1,6 +1,8 @@
 import "./globals.css";
 import { UserProvider } from "./context/UserContext";
 import { CaptainProvider } from "./context/CaptainContext";
+import { SocketProvider } from "./context/SocketContext";
+
 
 export default function RootLayout({ children }) {
   return (
@@ -8,7 +10,9 @@ export default function RootLayout({ children }) {
       <body>
         <CaptainProvider>
         <UserProvider>
-          {children}
+          <SocketProvider>
+            {children}
+            </SocketProvider>
         </UserProvider>
         </CaptainProvider>
       </body>

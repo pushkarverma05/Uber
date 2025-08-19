@@ -27,25 +27,9 @@ const userSchema = new mongoose.Schema({
         minlength: 6,
         select: false,
     },
-    MobileNumber: {
-       type: String,
-    required: false, // MobileNumber is optional for users who register with email
-    unique: true,
-  },
-  firebaseUID: {
-    type: String,
-    required: false, // Firebase UID is optional for users who register with email
-    unique: true,
-  },
     socketId: {
         type: String,
     },
-    otp: {
-        type: String
-    },
-    otpExpiry: {
-        type: Date
-    }
 });
 
 

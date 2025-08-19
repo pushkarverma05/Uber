@@ -1,63 +1,88 @@
-import Link from 'next/link'
-import React from 'react'
+'use client'
+  import Link from 'next/link'
+  import React from 'react'
 
-const RiderpopUP = (props) => {
-  return (
-    <div><h5 
-           onClick={()=>{
-            props.setRidePopUpPanel(true)
-           }}
-           className="p-1 opacity-0 text-center w-[93%] absolute top-0">
-              <i className="ri-arrow-up-wide-line"></i>
-            </h5>
-          <h3 className="text-center text-xl font-semibold mb-2">A Ride for you</h3>
-          <hr className="border-zinc-700 border-t-[0.2]" />
-       <div className='flex items-center justify-between mt-2'>
-          <div className='flex items-center just-start gap-3'>
-            <img className='h-12 w-12 rounded-full object-cover' src="https://pbs.twimg.com/media/BcINeMVCIAABeWd.jpg" alt="" />
-            <h4 className='text-lg font-medium'>PushkarVerma</h4>
-          </div>
-            <h4>4.5 km</h4>
-         </div>
-            <div className='w-full px-4'>
-                <div className='flex items-center py-2 gap-5'>
-                    <i className="ri-map-pin-user-fill"></i>
-                <div>
-                      <h3 className='text-lg font-medium'>562/11-A</h3>
-                      <p className=' text-xs'>Kankariya talab,Ahemdabad</p>
-                </div>
-                </div>
-                <hr className="border-zinc-700 border-t-[0.2]" />
-                <div className='flex items-center py-2 gap-5'>
-                    <i className="ri-map-pin-line"></i>
-                <div>
-                      <h3 className='text-lg font-medium'>Third Wave Coffee</h3>
-                      <p className=' text-xs'>17th Cross Rd,PWD Quarters,1st sector HSR layout,Bengaluru,Karnataka</p>
-                </div>
-                </div>
-                <hr className="border-zinc-700 border-t-[0.2]" />
-                <div className='flex items-center py-2 gap-5'>
-                    <i className="ri-currency-line"></i>
-                <div>
-                      <h3 className='text-lg font-medium'>₹193.20</h3>
-                      <p className='text-xs'>Cash Cash</p>
-                </div>
-                </div>
-           </div>
-         <div className='flex gap-4 items-center justify-between'>
+  const RidePopUp = (props) => {
+
+    return (
+      <div className="w-full rounded-t-2xl bg-zinc-900 text-white p-4 pb-6 overflow-hidden">
+        <div className="flex justify-between items-start">
+          <h3 className="text-xl font-semibold">New Ride Available</h3>
           <button
-           onClick={()=>{
-            props.setRidePopUpPanel(true)
-           }}
-           className='w-1/2 bg-red-500 mt-5 px-3 py-2 rounded-lg font-semibold'>Decline</button>
-          <Link href="/captainRiding"
-           onClick={()=>{
-            props.setRidePopUpPanel(false)
-           }}
-           className='flex justify-center w-1/2 bg-green-600 mt-5 px-3 py-2 rounded-lg font-semibold'>Accept</Link>
-         </div>
-         </div>
-  )
-}
+            onClick={() => props.setRidePopupPanel(false)}
+            className="text-zinc-400 hover:text-white text-2xl leading-none"
+            aria-label="Close"
+          >
+            <i className="ri-arrow-down-wide-line"></i>
+          </button>
+        </div>
 
-export default RiderpopUP
+        <div className="mt-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <img
+              className="h-12 w-12 rounded-full object-cover"
+              src='https://pbs.twimg.com/media/BcINeMVCIAABeWd.jpg'
+              alt=''
+            />
+            <h4 className="text-lg font-medium">{props.ride?.user.fullname.firstname + " " + props.ride?.user.fullname.lastname}</h4>
+          </div>
+          <span className="text-sm bg-zinc-800 px-3 py-1 rounded-full">4.5km</span>
+        </div>
+
+        <div className="mt-5 space-y-4">
+          <div className="flex gap-4">
+            <div className="text-green-400 pt-1">
+              <i className="ri-map-pin-user-fill"></i>
+            </div>
+            <div>
+              <h5 className="font-medium">{props.ride?.pickup.slice(0,15)}</h5>
+              <p className="text-xs text-zinc-400">{props.ride?.pickup}</p>
+            </div>
+          </div>
+
+          <div className="flex gap-4">
+            <div className="text-yellow-400 pt-1">
+              <i className="ri-map-pin-line"></i>
+            </div>
+            <div>
+              <h5 className="font-medium">{props.ride?.destination.slice(0,15)}</h5>
+              <p className="text-xs text-zinc-400">{props.ride?.destination}</p>
+            </div>
+          </div>
+
+          <div className="flex gap-4">
+              <div className="text-emerald-400 pt-1">
+                <i className="ri-currency-line"></i>
+              </div>
+              <div>
+                <h5 className="font-medium">₹{props.ride?.fare}</h5>
+                <p className="text-xs text-zinc-400">Cash</p>
+              </div>
+          </div>
+        </div>
+
+        <div className="mt-6 flex gap-4">
+          <button
+            onClick={()=>{
+              props.setRidePopupPanel(false)
+            }}
+            className="w-1/2 bg-red-500 hover:bg-red-600 transition px-4 py-2 rounded-lg font-semibold"
+          >
+            Decline
+          </button>
+          <Link
+            href={`/captainRiding?rideId=${props.ride?._id || ''}`}
+            onClick={() => {
+              props.setRidePopupPanel(false)
+              props.confirmRide();
+            }}
+            className="w-1/2 text-center bg-green-600 hover:bg-green-700 transition px-4 py-2 rounded-lg font-semibold"
+          >
+            Accept
+          </Link>
+        </div>
+      </div>
+    )
+  }
+
+  export default RidePopUp

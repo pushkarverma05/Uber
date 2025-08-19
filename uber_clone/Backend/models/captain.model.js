@@ -26,7 +26,7 @@ const captainSchema = new mongoose.Schema({
         minlength: 6,
         select: false,
     },
-    scocketId: {
+    socketId: {
         type: String,
     },
     status: {
@@ -60,7 +60,7 @@ const captainSchema = new mongoose.Schema({
         lat: {
             type: Number,
         },
-        lng: {
+        lon: {
             type: Number,
         },
     },

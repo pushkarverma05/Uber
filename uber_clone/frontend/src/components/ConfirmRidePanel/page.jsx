@@ -17,30 +17,31 @@ const ConfirmRide = (props) => {
                 <div className='flex items-center py-3 gap-5'>
                     <i className="ri-map-pin-user-fill"></i>
                 <div>
-                      <h3 className='text-lg font-medium'>562/11-A</h3>
-                      <p className='mt-1 text-xs'>Kankariya talab,Ahemdabad</p>
+                      <h3 className='text-lg font-medium'>{props.pickup.slice(0,15)}</h3>
+                      <p className='mt-1 text-xs'>{props.pickup}</p>
                 </div>
                 </div>
                 <hr className="border-zinc-700 border-t-[0.2]" />
                 <div className='flex items-center py-3 gap-5'>
                     <i className="ri-map-pin-line"></i>
                 <div>
-                      <h3 className='text-lg font-medium'>Third Wave Coffee</h3>
-                      <p className='mt-1 text-xs'>17th Cross Rd,PWD Quarters,1st sector HSR layout,Bengaluru,Karnataka</p>
+                      <h3 className='text-lg font-medium'>{props.destination.slice(0,15)}</h3>
+                      <p className='mt-1 text-xs'>{props.destination}</p>
                 </div>
                 </div>
                 <hr className="border-zinc-700 border-t-[0.2]" />
                 <div className='flex items-center py-3 gap-5'>
                     <i className="ri-currency-line"></i>
                 <div>
-                      <h3 className='text-lg font-medium'>₹193.20</h3>
-                      <p className='mt-1 text-xs'>Cash Cash</p>
+                      <h3 className='text-lg font-medium'>₹{props.fare[props.vehicleType]}</h3>
+                      <p className='mt-1 text-xs'>Cash</p>
                 </div>
                 </div>
            </div>
            <button
            onClick={()=>{
             props.setVehicleFound(true)
+            props.createRide() 
            }}
            className='bg-blue-500 mt-5 w-full px-6 py-2 rounded-lg font-semibold'>Confirm</button>
           </div>

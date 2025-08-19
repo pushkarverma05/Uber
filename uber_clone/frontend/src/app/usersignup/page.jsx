@@ -11,7 +11,6 @@ const UserSignUp = () => {
    const [lastname, setLastname] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [userData , setUserData] = useState({});
 
     const router = useRouter();
    const{ user , setUser} = React.useContext(UserDataContext);

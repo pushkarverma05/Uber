@@ -3,15 +3,21 @@ const captainService = require('../services/captain.service');
 const {validationResult} = require('express-validator');
 const blacklistTokenSchema = require('../models/blacklistToken.model');
 
-module.exports.registerCaptain = async (req, res) => {
+module.exports.registerCaptain = async (req, res, next) => {
     const error = validationResult(req);
     if (!error.isEmpty()) {
         return res.status(400).json({errors: error.array()});
     }
 
-    const {fullname :{firstname , lastname}, email, password, vehicle} = req.body;
+    const {fullname , email, password, vehicle} = req.body;
+         const firstname = fullname?.firstname;
+       const lastname = fullname?.lastname;
+       const color = vehicle?.color;
+            const plate = vehicle?.plate;
+            const capacity = vehicle?.capacity;
+            const vehicletype = vehicle?.vehicletype;
 
-    const isCaptianAlreadyExists = await captianModel.findOne({email});
+    const isCaptianAlreadyExists = await captainModel.findOne({email});
     if (isCaptianAlreadyExists) {
         return res.status(400).json({message: "Captian with this email already exists"});
     }
@@ -21,15 +27,15 @@ module.exports.registerCaptain = async (req, res) => {
 
     // Create captain using the service
         const captain = await captainService.createCaptain({
-            firstname,
-            lastname,
-            email,
-            password : hashedPassword,
-            // Vehicle details
-            color: vehicle.color,
-            plate: vehicle.plate,
-            capacity: vehicle.capacity,
-            vehicletype: vehicle.vehicletype
+          fullname: { firstname, lastname },
+          email,
+          password: hashedPassword,
+          vehicle: {
+            color,
+            plate,
+            capacity,
+            vehicletype
+          }
         });
 
         const token = captain.generateAuthToken();

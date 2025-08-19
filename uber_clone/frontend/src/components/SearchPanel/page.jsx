@@ -1,4 +1,5 @@
-import React, { useRef } from "react";
+import React from "react";
+
 
 const SearchPanel = ({
   setPanelOpen,
@@ -7,8 +8,16 @@ const SearchPanel = ({
   destination,
   setDestination,
   submitHandler,
-  showBackArrow
+  activeField,
+  setActiveField,
+  showBackArrow,
+  handleDestinationChange,
+  handlePickupChange,
+  setVehiclePanel,
+  findtrip
 }) => {
+
+
   return (
     <div>
       {showBackArrow && (
@@ -27,23 +36,34 @@ const SearchPanel = ({
         onSubmit={submitHandler}
       >
         <input
-          onClick={() => setPanelOpen(true)}
+          onClick={() => {
+            setPanelOpen(true);
+            setActiveField('pickup');
+          }}
           value={pickup}
-          onChange={(e) => setPickup(e.target.value)}
+          onChange={handlePickupChange}
           className="pr-10 pl-4 font-light outline-none mb-2 w-full"
           type="text"
           placeholder="Add a pickup location"
         />
         <hr className="border-zinc-700 border-t-[0.2]" />
         <input
-          onClick={() => setPanelOpen(true)}
+          onClick={() => {
+            setPanelOpen(true);
+            setActiveField('destination');
+          }}
           value={destination}
-          onChange={(e) => setDestination(e.target.value)}
+          onChange={handleDestinationChange}
           className="pr-10 pl-4 font-light outline-none mt-2 w-full"
           type="text"
           placeholder="Enter your destination"
         />
       </form>
+      <button
+      onClick={findtrip}
+      className="w-full bg-[#1A1A1A] text-white mt-5 p-3 rounded-xl font-semibold hover:bg-[#2A2A2A] transition-all duration-200">
+        Find trip
+      </button>
     </div>
   );
 };

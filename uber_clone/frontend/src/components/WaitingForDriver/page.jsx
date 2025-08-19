@@ -2,7 +2,8 @@ import React from 'react'
 
 const WaitingForDriver = (props) => {
   return (
-    <div><h5 
+    <div>
+      <h5 
            onClick={()=>{
             props.vehicleWaiting(false)
            }}
@@ -12,9 +13,10 @@ const WaitingForDriver = (props) => {
             <div className='flex items-center justify-between p-5'>
                <img className="h-15" src="https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_368,w_552/v1555367538/assets/31/ad21b7-595c-42e8-ac53-53966b4a5fee/original/Final_Black.png" alt="" />
                <div className='text-right '>
-                <h2 className='text-md font-medium'>Pushkar</h2>
-                <h4 className='text-2xl font-medium'>RJ 14 CS 7171</h4>
+                <h2 className='text-md font-medium capitalize'>{props.ride?.captain.fullname.firstname}</h2>
+                <h4 className='text-2xl font-medium'>{props.ride?.captain.vehicle.plate}</h4>
                 <p className='text-sm text-white/60'>Tesla X</p>
+                <h1 className='text-lg font-semibold'>{props.ride?.otp}</h1>
                </div>
             </div>
 
@@ -25,24 +27,24 @@ const WaitingForDriver = (props) => {
                 <div className='flex items-center py-3 gap-5'>
                     <i className="ri-map-pin-user-fill"></i>
                 <div>
-                      <h3 className='text-lg font-medium'>562/11-A</h3>
-                      <p className='mt-1 text-xs'>Kankariya talab,Ahemdabad</p>
+                      <h3 className='text-lg font-medium'>{props.ride?.pickup.slice(0,15)}</h3>
+                      <p className='mt-1 text-xs'>{props.ride?.pickup}</p>
                 </div>
                 </div>
                 <hr className="border-zinc-700 border-t-[0.2]" />
                 <div className='flex items-center py-3 gap-5'>
                     <i className="ri-map-pin-line"></i>
                 <div>
-                      <h3 className='text-lg font-medium'>Third Wave Coffee</h3>
-                      <p className='mt-1 text-xs'>17th Cross Rd,PWD Quarters,1st sector HSR layout,Bengaluru,Karnataka</p>
+                      <h3 className='text-lg font-medium'>{props.ride?.destination.slice(0,15)}</h3>
+                      <p className='mt-1 text-xs'>{props.ride?.destination}</p>
                 </div>
                 </div>
                 <hr className="border-zinc-700 border-t-[0.2]" />
                 <div className='flex items-center py-3 gap-5'>
                     <i className="ri-currency-line"></i>
                 <div>
-                      <h3 className='text-lg font-medium'>₹193.20</h3>
-                      <p className='mt-1 text-xs'>Cash Cash</p>
+                      <h3 className='text-lg font-medium'>₹{props.ride?.fare}</h3>
+                      <p className='mt-1 text-xs'>Cash</p>
                 </div>
                 </div>
            </div>

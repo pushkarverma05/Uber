@@ -10,38 +10,31 @@ const CaptainProtectedWraper = ({
 }) => {
   const router = useRouter();
   const { setCaptain } = useContext(CaptainDataContext);
-  const [isloading , setIsLoading] = useState(true);
+  const [isLoading , setIsLoading] = useState(true);
   
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = typeof window !== 'undefined' ? localStorage.getItem("token") : null;
     if (!token) {
       router.replace("/captainlogin");
       return;
     }
-  
-
-  axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/captains/profile`, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/captains/profile`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then((response) => {
+      if(response.status === 200) {
+        setCaptain(response.data.captain);
       }
     })
-  .then((response) => {
-    if(response.status === 200) {
-      setCaptain(response.data.captain);
-      setIsLoading(false);
-    }
-  })
-  .catch(error => {
-    console.log(error);
-    localStorage.removeItem('token');
-    router.replace("/captainlogin");
-  });
-
-},[router, setCaptain]);
-if(isloading){
-  return  (
-    <div>Loading...</div>
-  )
+    .catch(error => {
+      console.log(error);
+      localStorage.removeItem('token');
+      router.replace("/captainlogin");
+    })
+    .finally(()=> setIsLoading(false));
+  },[router, setCaptain]);
+if(isLoading){
+  return <div>Loading...</div>
 };
 
 return (
