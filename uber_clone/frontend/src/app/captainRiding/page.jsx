@@ -1,16 +1,15 @@
-"use client"
-import React, { useRef, useState } from "react";
-import 'remixicon/fonts/remixicon.css';
-import Link from 'next/link'
+"use client";
+import React, { useRef, useState, Suspense } from "react";
+import "remixicon/fonts/remixicon.css";
+import Link from "next/link";
 import axios from "axios";
-import { useRouter } from "next/navigation";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import FinishRide from "../FinishRide/page";
 import LiveTracking from "@/components/LiveTracking/page";
 
-const CaptainRiding = () => {
+const CaptainRidingContent = () => {
   const [otp, setOtp] = useState("");
   const [rideData, setRideData] = useState(null);
   const [finishRidePanel, setFinishRidePanel] = useState(false);
@@ -47,18 +46,17 @@ const CaptainRiding = () => {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}/rides/start-ride`,
         {
-          rideId: rideId,   // ✅ use query param
-          otp: otp
+          rideId: rideId, // ✅ from query
+          otp: otp,
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
 
       if (response.status === 200) {
-        // Assume response.data contains ride information (adjust key if different)
         setRideData(response.data?.ride || response.data);
         setFinishRidePanel(true);
       }
@@ -68,17 +66,25 @@ const CaptainRiding = () => {
   };
 
   return (
-    <div className='h-screen  text-white flex flex-col overflow-hidden'>
-      <div className='fixed p-3 top-0 flex items-center justify-between w-full'>
+    <div className="h-screen text-white flex flex-col overflow-hidden">
+      {/* Header */}
+      <div className="fixed p-3 top-0 flex items-center justify-between w-full">
         <h1 className="text-3xl font-semibold text-black">Cab X</h1>
-        <Link href="/captainlogin" className='fixed h-10 w-10 flex right-2 top-2 rounded-full items-center justify-center bg-[#141414]'>
+        <Link
+          href="/captainlogin"
+          className="fixed h-10 w-10 flex right-2 top-2 rounded-full items-center justify-center bg-[#141414]"
+        >
           <i className="ri-logout-box-r-line"></i>
         </Link>
       </div>
-      <div className='w-full h-1/2'>
+
+      {/* Live Tracking */}
+      <div className="w-full h-1/2">
         <LiveTracking />
       </div>
-      <div className='h-1/2 w-full relative bg-[#141414]'>
+
+      {/* Ride Control */}
+      <div className="h-1/2 w-full relative bg-[#141414]">
         <form onSubmit={submitHandler} className="p-6">
           <input
             value={otp}
@@ -102,6 +108,8 @@ const CaptainRiding = () => {
             Cancel
           </button>
         </form>
+
+        {/* Finish Ride Panel */}
         <div
           ref={finishRidePanelRef}
           className="fixed w-full z-10 bottom-0 translate-y-full pt-12"
@@ -115,7 +123,14 @@ const CaptainRiding = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CaptainRiding;
+// ✅ Proper default export with Suspense wrapper
+export default function CaptainRiding() {
+  return (
+    <Suspense fallback={<div className="text-white">Loading...</div>}>
+      <CaptainRidingContent />
+    </Suspense>
+  );
+}
