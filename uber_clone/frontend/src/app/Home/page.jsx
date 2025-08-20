@@ -295,6 +295,7 @@ useEffect(() => {
           <WaitingForDriver 
           ride={ride}
           vehicleWaiting={setvehicleWaiting} />
+        {/* LiveTracking improvements allow passing full ride elsewhere (Riding page). */}
         </div>
       </div>
     </UserProtectedWraper>

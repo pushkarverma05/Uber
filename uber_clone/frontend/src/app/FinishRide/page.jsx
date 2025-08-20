@@ -33,16 +33,17 @@ const FinishRide = (props) => {
 
 console.log(props);
   return (
-    <div className=" h-screen bg-[#141414] p-6">
+    <div className=" h-screen bg-[#141414] p-6 overflow-scroll">
       <div className="bg-[#141414] h-1/2">
-
       </div>
      <div 
-     className="h-1/2relative bg-[#141414] text-white p-6">
-       <div className='flex items-center justify-between mt-2'>
+     className="h-2/5 relative bg-[#141414] text-white p-6">
+       <div className='flex items-center justify-between'>
           <div className='flex items-center just-start gap-3'>
             <img className='h-12 w-12 rounded-full object-cover' src="https://pbs.twimg.com/media/BcINeMVCIAABeWd.jpg" alt="" />
-            <h4 className='text-lg font-medium'>{props.rideData?.user.fullname.firstname + " " + props.ride?.user.fullname.lastname}</h4>
+            <h4 className='text-lg font-medium'>
+              {props.rideData?.user?.fullname?.firstname + " " + (props.rideData?.user?.fullname?.lastname || "")}
+            </h4>
           </div>
             <h4>4.5 km</h4>
          </div>
@@ -74,7 +75,7 @@ console.log(props);
          <div className='flex flex-col mt-15 items-center justify-between'>
          <button
           onClick={endRide}
-           className="flex justify-center w-full bg-green-600  px-3 py-2 rounded-lg font-semibold"
+           className="flex justify-center w-full bg-green-600 mb-15 px-3 py-2 rounded-lg font-semibold"
             >
   Finish Ride
 </button>

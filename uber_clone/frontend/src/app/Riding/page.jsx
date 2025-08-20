@@ -40,6 +40,7 @@ const Riding = () => {
         {/* Top half: Live tracking */}
         <div className='w-full h-1/2 relative'>
           <div className="absolute inset-0">
+            {/* LiveTracking now derives coordinates from ride pickup/destination */}
             <LiveTracking ride={rideData} />
           </div>
         </div>

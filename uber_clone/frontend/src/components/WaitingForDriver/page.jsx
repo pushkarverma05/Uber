@@ -15,7 +15,9 @@ const WaitingForDriver = (props) => {
                <div className='text-right '>
                 <h2 className='text-md font-medium capitalize'>{props.ride?.captain.fullname.firstname}</h2>
                 <h4 className='text-2xl font-medium'>{props.ride?.captain.vehicle.plate}</h4>
-                <p className='text-sm text-white/60'>Tesla X</p>
+                <p className='text-sm text-white/60'>
+                  {props.ride?.captain?.vehicle?.model || props.ride?.captain?.vehicle?.vehicletype || 'Vehicle'}
+                </p>
                 <h1 className='text-lg font-semibold'>{props.ride?.otp}</h1>
                </div>
             </div>
@@ -27,7 +29,7 @@ const WaitingForDriver = (props) => {
                 <div className='flex items-center py-3 gap-5'>
                     <i className="ri-map-pin-user-fill"></i>
                 <div>
-                      <h3 className='text-lg font-medium'>{props.ride?.pickup.slice(0,15)}</h3>
+                      <h3 className='text-lg font-medium'>{props.ride?.pickup?.slice(0,15)}</h3>
                       <p className='mt-1 text-xs'>{props.ride?.pickup}</p>
                 </div>
                 </div>
@@ -35,7 +37,7 @@ const WaitingForDriver = (props) => {
                 <div className='flex items-center py-3 gap-5'>
                     <i className="ri-map-pin-line"></i>
                 <div>
-                      <h3 className='text-lg font-medium'>{props.ride?.destination.slice(0,15)}</h3>
+                      <h3 className='text-lg font-medium'>{props.ride?.destination?.slice(0,15)}</h3>
                       <p className='mt-1 text-xs'>{props.ride?.destination}</p>
                 </div>
                 </div>
