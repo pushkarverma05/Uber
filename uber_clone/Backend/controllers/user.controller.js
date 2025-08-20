@@ -7,58 +7,56 @@ const blacklistTokenSchema = require("../models/blacklistToken.model");
 
 
 module.exports.registerUser = async (req, res, next) => {
-    const errors = validationResult(req);
-    if(!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    }
-
-
-
-
-    const { fullname , email, password } = req.body;
-    
-     const firstname = fullname?.firstname;
-     const lastname = fullname?.lastname;
-    const isuserAlreadyExists = await userModel.findOne({ email });
-    if (isuserAlreadyExists) {
-        return res.status(400).json({ message: "User already exists" });
-    }
-
-    // Create user using the service
     try {
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        const { fullname, email, password } = req.body;
+
+        const firstname = fullname?.firstname;
+        const lastname = fullname?.lastname;
+        const isuserAlreadyExists = await userModel.findOne({ email });
+        if (isuserAlreadyExists) {
+            return res.status(400).json({ message: "User already exists" });
+        }
+
+        // Create user using the service
+
         const hashedPassword = await userModel.hashPassword(password);
         const user = await userService.createUser({
-          fullname: { firstname, lastname },
-          email,
-          password: hashedPassword,
+            fullname: { firstname, lastname },
+            email,
+            password: hashedPassword,
         });
         const token = user.generateAuthToken();
-        res.status(201).json({ token,user });
+        res.status(201).json({ token, user });
+
+    } catch (error) {
+        res.status(500).json({ message: "Internal Server Error" , error: error.message });
     }
-    catch (error) {
-    console.error("Error registering user:", error);
-    next(error);
-}
 }
 
 module.exports.loginUser = async (req, res, next) => {
     const { email, password } = req.body;
 
     try {
-        if(email && password) {
-        const user = await userModel.findOne({email}).select('+password');
-        if (!user) {
-            return res.status(401).json({ message: "Invalid email or password" });
-        }
-        const isMatch = await user.comparePassword(password);
-        if (!isMatch) {
-            return res.status(401).json({ message: "Invalid email or password" });
-        }
+        if (email && password) {
+            const user = await userModel.findOne({ email }).select('+password');
+            if (!user) {
+                return res.status(401).json({ message: "Invalid email or password" });
+            }
+            const isMatch = await user.comparePassword(password);
+            if (!isMatch) {
+                return res.status(401).json({ message: "Invalid email or password" });
+            }
 
-        const token = user.generateAuthToken();
-        res.cookie('token', token);
-        res.status(200).json({ token, user });
-    } 
+            const token = user.generateAuthToken();
+            res.cookie('token', token);
+            res.status(200).json({ token, user });
+        }
     } catch (error) {
         next(error);
     }
